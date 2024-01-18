@@ -1,7 +1,7 @@
 {
   "name": "t-bouncing-circles",
   "types":"types/index.d.ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "install this and make your banner look more high technology",
   "main": "index.js",
   "scripts": {
