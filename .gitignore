@@ -1,0 +1,19 @@
+# Node.js
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+*.js.map
+
+# Webpack
+/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
