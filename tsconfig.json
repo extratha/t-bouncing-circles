@@ -12,7 +12,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declarationDir": "./types" 
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
