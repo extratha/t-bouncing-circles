@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'production',
   entry: './src/BouncingCircles/index.tsx',  
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -13,15 +14,12 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: 'babel-loader',
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
-    alias: {
-      '@babel/preset-env': require.resolve('@babel/preset-env'),
-    },
   },
 };
