@@ -9,6 +9,8 @@ interface Circle {
   vy: number;
 }
 interface BouncingCirclesProps {
+  width?: number,
+  height? : number ,
   numberOfCircles?: number,
   constantSpeed?: number,
   baseCircleSize?:number,
@@ -29,6 +31,8 @@ const defaultBouncingCirclesProps = {
   maximumConnection: 3,
 }
 const BouncingCircles: React.FC<BouncingCirclesProps> = ({
+  width: widthProps,
+  height : heightProps,
   numberOfCircles = defaultBouncingCirclesProps.numberOfCircles,
   constantSpeed = defaultBouncingCirclesProps.constantSpeed,
   baseCircleSize = defaultBouncingCirclesProps.baseCircleSize,
@@ -47,10 +51,10 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const devicePixelRatio = 1;
-    canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
-    canvas.height = (canvas.parentElement)?.clientHeight ?
+    canvas.width = widthProps || (canvas.parentElement?.clientWidth || window.innerWidth);
+    canvas.height = heightProps || ((canvas.parentElement)?.clientHeight ?
       canvas.parentElement.clientHeight
-      : 400;
+      : 400);
     ctx.scale(devicePixelRatio, devicePixelRatio);
 
     const circles = [] as Circle[]
