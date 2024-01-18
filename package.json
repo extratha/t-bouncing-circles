@@ -1,20 +1,18 @@
 {
   "name": "t-bouncing-circles",
-  "types":"types/index.d.ts",
-  "version": "1.0.2",
-  "description": "install this and make your banner look more high technology",
-  "main": "index.js",
+  "version": "1.0.3",
+  "description": "Install this and make your banner look more high technology",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "webpack",
-    "test": "npm test"
+    "build": "tsc",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/extratha/t-bouncing-circles.git"
+    "url": "https://github.com/extratha/t-bouncing-circles.git"
   },
-  "keywords": [
-    "t-bouncing-circles"
-  ],
+  "keywords": ["t-bouncing-circles"],
   "author": "thakorn.t",
   "license": "ISC",
   "bugs": {
@@ -22,19 +20,12 @@
   },
   "homepage": "https://github.com/extratha/t-bouncing-circles#readme",
   "devDependencies": {
-    "@babel/cli": "^7.23.4",
-    "@babel/preset-typescript": "^7.23.3",
-    "@types/react": "^18.2.47",
-    "babel-loader": "^9.1.3",
-    "typescript": "^5.3.3",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "@types/react": "^18.0.0",
+    "typescript": "^4.0.0",
+    "jest": "^27.0.0"
   },
   "dependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.8",
-    "@babel/preset-react": "^7.23.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
