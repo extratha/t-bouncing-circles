@@ -1,5 +1,7 @@
 import React from 'react';
 interface BouncingCirclesProps {
+    width?: number;
+    height?: number;
     numberOfCircles?: number;
     constantSpeed?: number;
     baseCircleSize?: number;

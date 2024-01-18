@@ -36,7 +36,7 @@ var defaultBouncingCirclesProps = {
     maximumConnection: 3,
 };
 var BouncingCircles = function (_a) {
-    var _b = _a.numberOfCircles, numberOfCircles = _b === void 0 ? defaultBouncingCirclesProps.numberOfCircles : _b, _c = _a.constantSpeed, constantSpeed = _c === void 0 ? defaultBouncingCirclesProps.constantSpeed : _c, _d = _a.baseCircleSize, baseCircleSize = _d === void 0 ? defaultBouncingCirclesProps.baseCircleSize : _d, _e = _a.circleColor, circleColor = _e === void 0 ? defaultBouncingCirclesProps.circleColor : _e, _f = _a.connectedLineColor, connectedLineColor = _f === void 0 ? defaultBouncingCirclesProps.connectedLineColor : _f, _g = _a.connectedLineWidth, connectedLineWidth = _g === void 0 ? defaultBouncingCirclesProps.connectedLineWidth : _g, _h = _a.connectedRadius, connectedRadius = _h === void 0 ? defaultBouncingCirclesProps.connectedRadius : _h, _j = _a.maximumConnection, maximumConnection = _j === void 0 ? defaultBouncingCirclesProps.maximumConnection : _j;
+    var widthProps = _a.width, heightProps = _a.height, _b = _a.numberOfCircles, numberOfCircles = _b === void 0 ? defaultBouncingCirclesProps.numberOfCircles : _b, _c = _a.constantSpeed, constantSpeed = _c === void 0 ? defaultBouncingCirclesProps.constantSpeed : _c, _d = _a.baseCircleSize, baseCircleSize = _d === void 0 ? defaultBouncingCirclesProps.baseCircleSize : _d, _e = _a.circleColor, circleColor = _e === void 0 ? defaultBouncingCirclesProps.circleColor : _e, _f = _a.connectedLineColor, connectedLineColor = _f === void 0 ? defaultBouncingCirclesProps.connectedLineColor : _f, _g = _a.connectedLineWidth, connectedLineWidth = _g === void 0 ? defaultBouncingCirclesProps.connectedLineWidth : _g, _h = _a.connectedRadius, connectedRadius = _h === void 0 ? defaultBouncingCirclesProps.connectedRadius : _h, _j = _a.maximumConnection, maximumConnection = _j === void 0 ? defaultBouncingCirclesProps.maximumConnection : _j;
     var canvasRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         var _a, _b;
@@ -47,10 +47,10 @@ var BouncingCircles = function (_a) {
         if (!ctx)
             return;
         var devicePixelRatio = 1;
-        canvas.width = ((_a = canvas.parentElement) === null || _a === void 0 ? void 0 : _a.clientWidth) || window.innerWidth;
-        canvas.height = ((_b = (canvas.parentElement)) === null || _b === void 0 ? void 0 : _b.clientHeight) ?
+        canvas.width = widthProps || (((_a = canvas.parentElement) === null || _a === void 0 ? void 0 : _a.clientWidth) || window.innerWidth);
+        canvas.height = heightProps || (((_b = (canvas.parentElement)) === null || _b === void 0 ? void 0 : _b.clientHeight) ?
             canvas.parentElement.clientHeight
-            : 400;
+            : 400);
         ctx.scale(devicePixelRatio, devicePixelRatio);
         var circles = [];
         function createCircle() {
