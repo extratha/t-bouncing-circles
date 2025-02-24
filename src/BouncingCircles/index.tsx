@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect, useRef } from 'react';
+"use client";
+import React, { useEffect, useRef } from "react";
 
 interface Circle {
   x: number;
@@ -9,16 +9,17 @@ interface Circle {
   vy: number;
 }
 interface BouncingCirclesProps {
-  width?: number,
-  height?: number,
-  numberOfCircles?: number,
-  constantSpeed?: number,
-  baseCircleSize?: number,
-  circleColor?: string,
-  connectedLineColor?: string,
-  connectedLineWidth?: number,
-  connectedRadius?: number,
-  maximumConnection?: number,
+  width?: number;
+  height?: number;
+  numberOfCircles?: number;
+  constantSpeed?: number;
+  baseCircleSize?: number;
+  circleColor?: string;
+  connectedLineColor?: string;
+  connectedLineWidth?: number;
+  connectedRadius?: number;
+  maximumConnection?: number;
+  backgroundColor?: string;
 }
 const defaultBouncingCirclesProps = {
   numberOfCircles: 50,
@@ -29,7 +30,7 @@ const defaultBouncingCirclesProps = {
   connectedLineWidth: 1,
   connectedRadius: 100,
   maximumConnection: 3,
-}
+};
 const BouncingCircles: React.FC<BouncingCirclesProps> = ({
   width: widthProps,
   height: heightProps,
@@ -41,6 +42,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
   connectedLineWidth = defaultBouncingCirclesProps.connectedLineWidth,
   connectedRadius = defaultBouncingCirclesProps.connectedRadius,
   maximumConnection = defaultBouncingCirclesProps.maximumConnection,
+  backgroundColor,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -48,30 +50,35 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const devicePixelRatio = 1;
-    canvas.width = widthProps || (canvas.parentElement?.clientWidth || window.innerWidth);
-    canvas.height = heightProps || ((canvas.parentElement)?.clientHeight ?
-      canvas.parentElement.clientHeight
-      : 400);
+    canvas.width =
+      widthProps || canvas.parentElement?.clientWidth || window.innerWidth;
+    canvas.height =
+      heightProps ||
+      (canvas.parentElement?.clientHeight
+        ? canvas.parentElement.clientHeight
+        : 400);
     ctx.scale(devicePixelRatio, devicePixelRatio);
 
-    const circles = [] as Circle[]
-
+    const circles = [] as Circle[];
 
     function createCircle(): Circle {
       const randomValue = Math.random();
 
       let radius: number;
       if (randomValue < 0.75) {
-        // 75% chance for small circles 
+        // 75% chance for small circles
         radius = Math.random() * (1 - 0.1) + baseCircleSize;
       } else {
         radius = Math.random() * (7 - 3) + baseCircleSize;
       }
 
-      const speed = radius <= 3 ? Math.random() * (3 - 1) + 1 : Math.random() * (1.0 - 0.1) + 0.1;
+      const speed =
+        radius <= 3
+          ? Math.random() * (3 - 1) + 1
+          : Math.random() * (1.0 - 0.1) + 0.1;
 
       if (!canvas) return { x: 0, y: 0, radius, vx: 0, vy: 0 };
 
@@ -86,7 +93,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
 
     function drawCircle(circle: Circle): void {
       // Draw circles with pastel blue fill color
-      if (!ctx) return
+      if (!ctx) return;
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.fillStyle = circleColor; // Pastel blue fill color
@@ -105,16 +112,18 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
         const collisionAngle = Math.atan2(dy, dx);
 
         // Move circles away from each other
-        circle.x -= overlap / 2 * Math.cos(collisionAngle);
-        circle.y -= overlap / 2 * Math.sin(collisionAngle);
+        circle.x -= (overlap / 2) * Math.cos(collisionAngle);
+        circle.y -= (overlap / 2) * Math.sin(collisionAngle);
 
-        otherCircle.x += overlap / 2 * Math.cos(collisionAngle);
-        otherCircle.y += overlap / 2 * Math.sin(collisionAngle);
+        otherCircle.x += (overlap / 2) * Math.cos(collisionAngle);
+        otherCircle.y += (overlap / 2) * Math.sin(collisionAngle);
 
         // Calculate new velocities
         const angle = Math.atan2(dy, dx);
         const speed1 = Math.sqrt(circle.vx * circle.vx + circle.vy * circle.vy);
-        const speed2 = Math.sqrt(otherCircle.vx * otherCircle.vx + otherCircle.vy * otherCircle.vy);
+        const speed2 = Math.sqrt(
+          otherCircle.vx * otherCircle.vx + otherCircle.vy * otherCircle.vy
+        );
 
         const direction1 = Math.atan2(circle.vy, circle.vx);
         const direction2 = Math.atan2(otherCircle.vy, otherCircle.vx);
@@ -125,13 +134,23 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
         const newVy2 = speed2 * Math.sin(direction2 - angle);
 
         // Apply elastic collision formula
-        const finalVx1 = ((circle.radius - otherCircle.radius) * newVx1 + (2 * otherCircle.radius * newVx2)) / (circle.radius + otherCircle.radius);
-        const finalVx2 = ((2 * circle.radius * newVx1) + (otherCircle.radius - circle.radius) * newVx2) / (circle.radius + otherCircle.radius);
+        const finalVx1 =
+          ((circle.radius - otherCircle.radius) * newVx1 +
+            2 * otherCircle.radius * newVx2) /
+          (circle.radius + otherCircle.radius);
+        const finalVx2 =
+          (2 * circle.radius * newVx1 +
+            (otherCircle.radius - circle.radius) * newVx2) /
+          (circle.radius + otherCircle.radius);
 
-        circle.vx = Math.cos(angle) * finalVx1 + Math.cos(angle + Math.PI / 2) * newVy1;
-        circle.vy = Math.sin(angle) * finalVx1 + Math.sin(angle + Math.PI / 2) * newVy1;
-        otherCircle.vx = Math.cos(angle) * finalVx2 + Math.cos(angle + Math.PI / 2) * newVy2;
-        otherCircle.vy = Math.sin(angle) * finalVx2 + Math.sin(angle + Math.PI / 2) * newVy2;
+        circle.vx =
+          Math.cos(angle) * finalVx1 + Math.cos(angle + Math.PI / 2) * newVy1;
+        circle.vy =
+          Math.sin(angle) * finalVx1 + Math.sin(angle + Math.PI / 2) * newVy1;
+        otherCircle.vx =
+          Math.cos(angle) * finalVx2 + Math.cos(angle + Math.PI / 2) * newVy2;
+        otherCircle.vy =
+          Math.sin(angle) * finalVx2 + Math.sin(angle + Math.PI / 2) * newVy2;
 
         // If circles are still too close, move them away
         const correction = 0.5;
@@ -143,44 +162,68 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     }
 
     function moveCircles(): void {
-      circles.forEach(circle => {
+      circles.forEach((circle) => {
         circle.x += circle.vx;
         circle.y += circle.vy;
-        if (!canvas) return
-        if (circle.x - circle.radius <= 0 || circle.x + circle.radius >= canvas.width) {
+        if (!canvas) return;
+        if (
+          circle.x - circle.radius <= 0 ||
+          circle.x + circle.radius >= canvas.width
+        ) {
           circle.vx *= -1;
           // Ensure the circle stays within the canvas after reversing velocity
-          circle.x = Math.max(circle.radius, Math.min(canvas.width - circle.radius, circle.x));
+          circle.x = Math.max(
+            circle.radius,
+            Math.min(canvas.width - circle.radius, circle.x)
+          );
         }
 
-        if (circle.y - circle.radius <= 0 || circle.y + circle.radius >= canvas.height) {
+        if (
+          circle.y - circle.radius <= 0 ||
+          circle.y + circle.radius >= canvas.height
+        ) {
           circle.vy *= -1;
           // Ensure the circle stays within the canvas after reversing velocity
-          circle.y = Math.max(circle.radius, Math.min(canvas.height - circle.radius, circle.y));
+          circle.y = Math.max(
+            circle.radius,
+            Math.min(canvas.height - circle.radius, circle.y)
+          );
         }
 
         // Check for collisions with other circles
-        circles.forEach(otherCircle => {
+        circles.forEach((otherCircle) => {
           if (circle !== otherCircle) {
             handleCollision(circle, otherCircle);
           }
         });
 
         // Prevent circles from getting stuck in corners
-        if ((circle.vx > 0 && circle.vy > 0) || (circle.vx < 0 && circle.vy < 0)) {
+        if (
+          (circle.vx > 0 && circle.vy > 0) ||
+          (circle.vx < 0 && circle.vy < 0)
+        ) {
           if (circle.x - circle.radius <= 0 && circle.y - circle.radius <= 0) {
             // Top-left corner
             circle.vx = Math.abs(circle.vx);
             circle.vy = Math.abs(circle.vy);
-          } else if (circle.x + circle.radius >= canvas.width && circle.y - circle.radius <= 0) {
+          } else if (
+            circle.x + circle.radius >= canvas.width &&
+            circle.y - circle.radius <= 0
+          ) {
             // Top-right corner
             circle.vx = -Math.abs(circle.vx);
             circle.vy = Math.abs(circle.vy);
-          } else if (circle.x - circle.radius <= 0 && circle.y + circle.radius >= canvas.height) {
+          } else if (
+            circle.x - circle.radius <= 0 &&
+            circle.y + circle.radius >= canvas.height
+          ) {
             // Bottom-left corner
             circle.vx = Math.abs(circle.vx);
             circle.vy = -Math.abs(circle.vy);
-          } else if (circle.x + circle.radius >= canvas.width && circle.y + circle.radius >= canvas.height) {
+          } else if (
+            circle.x + circle.radius >= canvas.width &&
+            circle.y + circle.radius >= canvas.height
+          ) {
             // Bottom-right corner
             circle.vx = -Math.abs(circle.vx);
             circle.vy = -Math.abs(circle.vy);
@@ -190,7 +233,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     }
 
     function drawConnectedLines(): void {
-      if (!ctx) return
+      if (!ctx) return;
       ctx.beginPath();
       ctx.lineWidth = connectedLineWidth; // Set line width to 0.3px
 
@@ -198,7 +241,8 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
         let connections = 0; // Counter for connections
 
         circles.forEach((otherCircle, otherIndex) => {
-          if (index !== otherIndex && connections < maximumConnection) { // Limit the connections to 4
+          if (index !== otherIndex && connections < maximumConnection) {
+            // Limit the connections to 4
             const dx = otherCircle.x - circle.x;
             const dy = otherCircle.y - circle.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -218,7 +262,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     }
 
     function animate(): void {
-      if (!ctx || !canvas) return
+      if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Draw dashed lines connecting each circle to the two circles ahead in the array
 
@@ -236,7 +280,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
 
       while (overlap) {
         const circle = createCircle();
-        overlap = circles.some(otherCircle => {
+        overlap = circles.some((otherCircle) => {
           const dx = circle.x - otherCircle.x;
           const dy = circle.y - otherCircle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -250,7 +294,6 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
     }
 
     animate();
-
   }, []);
 
   return (
@@ -258,7 +301,7 @@ const BouncingCircles: React.FC<BouncingCirclesProps> = ({
       id="canvas"
       ref={canvasRef}
       style={{
-        backgroundColor: "#363345",
+        backgroundColor: backgroundColor || "#363345",
       }}
     ></canvas>
   );

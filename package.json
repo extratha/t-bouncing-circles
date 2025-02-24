@@ -1,8 +1,8 @@
 {
   "name": "t-bouncing-circles",
-  "version": "1.0.20",
+  "version": "1.1.29",
   "description": "Enhance your website's visual appeal with animated bouncing circles.",
-  "main": "./dist/index.js",
+  "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
